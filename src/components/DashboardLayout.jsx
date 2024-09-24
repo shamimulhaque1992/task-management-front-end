@@ -25,12 +25,12 @@ const DashboardLayout = () => {
   }
 
   return (
-    <section className="h-screen bg-light_gray ">
-      <div className="flex h-screen container p-5">
+    <section className="bg-light_gray ">
+      <div className="flex container p-5">
         {/* Sidebar */}
         <Sidebar />
 
-        <div className="flex-1 flex flex-col ms-5 overflow-hidden">
+        <div className="flex-1 flex flex-col ms-5 ">
           {/* Navbar */}
           <Navbar />
 

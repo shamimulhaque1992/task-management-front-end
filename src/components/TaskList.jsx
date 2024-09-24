@@ -9,18 +9,21 @@ import Filter from "./Filter";
 import CreateTaskModal from "./CreateTaskModal";
 import { fetchUser } from "@/store/usersSlice";
 import { useUser } from "@clerk/clerk-react";
+import Loader from "./Loader";
+import toast from "react-hot-toast";
 
 const TaskList = () => {
   const { user } = useUser();
   const dispatch = useDispatch();
   const [isCreateTaskModalOpen, setIsCreateTaskModalOpen] = useState(false);
-  const { tasks, loading, error } = useSelector((state) => state.tasks);
+  const { tasks, loading, error, createLoading, success } = useSelector(
+    (state) => state.tasks
+  );
   const {
     users: backEndUsers,
     loading: userLoading,
     error: userError,
   } = useSelector((state) => state.users);
-  console.log("backEndUsers", backEndUsers);
   const [query, setQuery] = useState({
     sortBy: "",
     sortOrder: "",
@@ -28,7 +31,7 @@ const TaskList = () => {
     status: "",
     userId: backEndUsers?._id,
   });
-
+  console.log(query);
   useEffect(() => {
     if (!query.userId) return;
     dispatch(
@@ -42,9 +45,9 @@ const TaskList = () => {
     );
   }, [dispatch, query]);
   useEffect(() => {
-    if (!user) return;
+    if (!user?.primaryEmailAddress?.emailAddress) return;
     dispatch(fetchUser(user?.primaryEmailAddress?.emailAddress));
-  }, [dispatch, user, query.userId]);
+  }, [dispatch, user]);
   useEffect(() => {
     setQuery({ ...query, userId: backEndUsers?._id });
   }, [backEndUsers]);
@@ -57,38 +60,90 @@ const TaskList = () => {
     });
   };
 
-  if (loading) return <p>Loading...</p>;
+  if (loading || createLoading) return <Loader></Loader>;
   if (error) return <p>{error}</p>;
 
   return (
-    <div className="h-screen mx-auto p-4 overflow-y-scroll pb-36">
-      <div className="flex flex-row w-12/12 justify-between items-center py-4">
-        <div className="flex flex-row justify-between items-center">
-          <h2 className="text-2xl font-bold mb-4">All Tasks</h2>
-        </div>
-        <div className="">
-          <Button onClick={() => setIsCreateTaskModalOpen(true)}>
-            Add Task
-          </Button>
-        </div>
+    <div className="mx-auto max-w-7xl p-6 pb-36 bg-gray-50">
+      {/* Header */}
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-3xl font-extrabold text-gray-800">All Tasks</h2>
+        <Button
+          className="bg-indigo-600 text-white px-6 py-2 rounded-md shadow-sm hover:bg-indigo-700 transition-all"
+          onClick={() => setIsCreateTaskModalOpen(true)}
+        >
+          Add Task
+        </Button>
       </div>
 
       {/* Filters */}
-      <Filter handleSelectChange={handleSelectChange}></Filter>
+      <div className="mb-8">
+        <Filter handleSelectChange={handleSelectChange} />
+      </div>
 
-      <ul className="space-y-4 ">
-        {tasks?.map((task) => (
-          <li key={task._id} className="bg-white shadow-md p-4 rounded-lg">
-            <h3 className="text-xl font-semibold">{task.title}</h3>
-            <p>{task.description}</p>
-            <p className="text-gray-500">Status: {task.status}</p>
-            <p className="text-gray-500">Priority: {task.priority}</p>
-            <p className="text-gray-500">
-              Due Date: {formatDate(task.dueDate)}
-            </p>
-          </li>
-        ))}
+      {/* Task List */}
+      <ul className="space-y-6">
+        {tasks?.map((task) => {
+          const getStatusStyle = (status) => {
+            if (status === "In Progress")
+              return "bg-yellow-100 text-yellow-600";
+            if (status === "Pending") return "bg-red-100 text-red-600";
+            if (status === "Completed") return "bg-green-100 text-green-600";
+            return "bg-gray-100 text-gray-600";
+          };
+
+          const getPriorityStyle = (priority) => {
+            if (priority === "High") return "bg-red-100 text-red-600";
+            if (priority === "Medium") return "bg-yellow-100 text-yellow-600";
+            if (priority === "Low") return "bg-green-100 text-green-600";
+            return "bg-gray-100 text-gray-600";
+          };
+          return (
+            <li
+              key={task._id}
+              className="bg-white shadow-lg p-6 rounded-xl border border-gray-200 transition-shadow hover:shadow-xl"
+            >
+              <div className="flex items-center justify-between">
+                <h3 className="text-2xl font-bold text-gray-800">
+                  {task.title}
+                </h3>
+                {/* Priority with dynamic color */}
+                <span
+                  className={`text-sm font-medium py-1 px-3 rounded-full ${getPriorityStyle(
+                    task.priority
+                  )}`}
+                >
+                  {task.priority}
+                </span>
+              </div>
+
+              <p className="text-gray-600 mt-2 mb-4">{task.description}</p>
+
+              <div className="flex justify-between items-center text-gray-500 text-sm">
+                {/* Status with dynamic color */}
+                <p className="flex items-center">
+                  <span className="font-medium text-gray-700">Status: </span>
+                  <span
+                    className={`ml-2 py-1 px-3 rounded-full ${getStatusStyle(
+                      task.status
+                    )}`}
+                  >
+                    {task.status}
+                  </span>
+                </p>
+
+                {/* Due Date */}
+                <p>
+                  <span className="font-medium text-gray-700">Due Date: </span>
+                  {formatDate(task.dueDate)}
+                </p>
+              </div>
+            </li>
+          );
+        })}
       </ul>
+
+      {/* Create Task Modal */}
       <CreateTaskModal
         isOpen={isCreateTaskModalOpen}
         onClose={() => setIsCreateTaskModalOpen(false)}

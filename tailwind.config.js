@@ -23,7 +23,7 @@ export default {
           foreground: "hsl(var(--secondary-foreground))",
         },
         blue: "#0072F5",
-        green: "#0F9549",
+        green_theme: "#0F9549",
         red_theme: "#EF4444",
         orange: "#F5A524",
         dark: "#16181A",

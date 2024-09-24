@@ -4,7 +4,7 @@ import axios from "axios";
 // Thunk to fetch a single user by email
 export const fetchUser = createAsyncThunk("users/fetchUser", async (email) => {
   const response = await axios.get(
-    `http://localhost:5000/api/v1/user/${email}`
+    `https://task-management-server-six.vercel.app/api/v1/user/${email}`
   );
   return response.data.data;
 });
@@ -14,7 +14,7 @@ export const createUser = createAsyncThunk(
   "users/createUser",
   async (newUser) => {
     const response = await axios.patch(
-      "http://localhost:5000/api/v1/user/create-user",
+      "https://task-management-server-six.vercel.app/api/v1/user/create-user",
       newUser
     );
     return response.data.data; // Return the created user data

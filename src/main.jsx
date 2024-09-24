@@ -26,9 +26,11 @@ createRoot(document.getElementById("root")).render(
       <Provider store={store}>
         <ClerkProvider
           publishableKey={PUBLISHABLE_KEY}
+          signUpUrl="/sign-up"
+          signInUrl="/sign-in"
           afterSignOutUrl="/sign-in"
-          afterSignInUrl="/dashboard"
-          signInForceRedirectUrl="/dashboard"
+          signInFallbackRedirectUrl="/"
+          signUpFallbackRedirectUrl="/"
         >
           <App />
         </ClerkProvider>

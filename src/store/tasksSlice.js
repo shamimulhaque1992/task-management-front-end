@@ -9,7 +9,7 @@ export const fetchTasks = createAsyncThunk(
   async ({ sortBy, sortOrder, priority, status, userId }) => {
     if (!userId) return;
     const response = await axios.get(
-      `http://localhost:5000/api/v1/task?sortBy=${sortBy}&sortOrder=${sortOrder}&priority=${priority}&status=${status}&userId=${userId}`
+      `https://task-management-server-six.vercel.app/api/v1/task?sortBy=${sortBy}&sortOrder=${sortOrder}&priority=${priority}&status=${status}&userId=${userId}`
     );
     return response.data.data;
   }
@@ -20,7 +20,7 @@ export const createTask = createAsyncThunk(
   "tasks/createTask",
   async (newTask) => {
     const response = await axios.post(
-      "http://localhost:5000/api/v1/task/create-task",
+      "https://task-management-server-six.vercel.app/api/v1/task/create-task",
       newTask
     );
     return response.data.data;
@@ -32,7 +32,7 @@ export const updateTask = createAsyncThunk(
   "tasks/updateTask",
   async ({ taskId, updatedTask }) => {
     const response = await axios.patch(
-      `http://localhost:5000/api/v1/task/${taskId}`,
+      `https://task-management-server-six.vercel.app/api/v1/task/${taskId}`,
       updatedTask
     );
     return response.data.data;
@@ -43,14 +43,23 @@ export const updateTask = createAsyncThunk(
 export const deleteTask = createAsyncThunk(
   "tasks/deleteTask",
   async (taskId) => {
-    await axios.delete(`http://localhost:5000/api/v1/task/${taskId}`);
+    await axios.delete(
+      `https://task-management-server-six.vercel.app/api/v1/task/${taskId}`
+    );
     return taskId;
   }
 );
 
 const tasksSlice = createSlice({
   name: "tasks",
-  initialState: { tasks: [], loading: false, error: null },
+  initialState: {
+    tasks: [],
+    loading: false,
+    error: null,
+    success: false,
+    createLoading: false,
+    createError: false,
+  },
   reducers: {
     setFilter: (state, action) => {
       state.filter = action.payload;
@@ -60,8 +69,19 @@ const tasksSlice = createSlice({
     builder
 
       // create task
+      .addCase(createTask.pending, (state) => {
+        state.createLoading = true; // Set creatingTask to true when task creation is pending
+        state.createError = null; // Clear any previous errors
+      })
       .addCase(createTask.fulfilled, (state, action) => {
-        state.tasks.push(action.payload); // Add the new task to the list of tasks
+        state.createLoading = false; // Reset creatingTask to false when task creation is successful
+        state.tasks.push(action.payload);
+        state.success = true; // Add the new task to the list of tasks
+      })
+      .addCase(createTask.rejected, (state, action) => {
+        state.createLoading = false; // Reset creatingTask to false when task creation fails
+        state.createError = action.error.message;
+        state.success = false; // Store the error message
       })
       // Fetch tasks
       .addCase(fetchTasks.pending, (state) => {

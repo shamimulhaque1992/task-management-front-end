@@ -1,8 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import TaskList from "./components/TaskList";
-import TaskForm from "./components/TaskForm";
 import Home from "./pages/Dashboard";
 import SignInPage from "./pages/SignIn";
 import SignUpPage from "./pages/SignUp";

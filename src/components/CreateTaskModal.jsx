@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogHeader } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog"; // Use DialogTitle
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/select";
 import { useDispatch } from "react-redux";
 import { createTask } from "../store/tasksSlice";
+import toast from "react-hot-toast";
 
 const CreateTaskModal = ({ isOpen, onClose, backEndUsers }) => {
   const dispatch = useDispatch();
@@ -20,7 +21,6 @@ const CreateTaskModal = ({ isOpen, onClose, backEndUsers }) => {
   const [priority, setPriority] = useState("Low");
   const [status, setStatus] = useState("Pending");
   const [dueDate, setDueDate] = useState("");
-  console.log(backEndUsers, "sdseas");
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -33,15 +33,23 @@ const CreateTaskModal = ({ isOpen, onClose, backEndUsers }) => {
       assignedTo: backEndUsers?._id,
     };
 
-    // Dispatch the createTask action
     if (!backEndUsers._id) return;
-    dispatch(createTask(newTask)).then(() => {
-      // No need to refetch tasks, they are automatically updated in the store
-      onClose(); // Close the modal after creating the task
-      resetForm(); // Reset the form
-    });
+    try {
+      dispatch(createTask(newTask)).then((result) => {
+        console.log(result, "result");
+        if (result.error) {
+          toast.error("Something Went Wrong!", { duration: 3000 });
+        }
+        if (result.meta.requestStatus === "fulfilled") {
+          onClose(); // Close the modal after creating the task
+          resetForm();
+          toast.success("Task Created Successfully", { duration: 3000 }); // Reset the form
+        }
+      });
+    } catch (error) {
+      toast.error("Something Went Wrong!", { duration: 3000 });
+    }
   };
-
   const resetForm = () => {
     setTitle("");
     setDescription("");
@@ -49,11 +57,12 @@ const CreateTaskModal = ({ isOpen, onClose, backEndUsers }) => {
     setStatus("Pending");
     setDueDate("");
   };
-
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent>
-        <DialogHeader>Create Task</DialogHeader>
+        {/* Add DialogTitle for accessibility */}
+        <DialogTitle>Create Task</DialogTitle>
+
         <form onSubmit={handleSubmit}>
           <div className="space-y-4">
             {/* Task Title */}

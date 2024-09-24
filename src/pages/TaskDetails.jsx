@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import TaskForm from "../components/TaskForm"; // Form component for editing
 import { useSelector, useDispatch } from "react-redux";
 import { fetchTasks, deleteTask, updateTask } from "../store/tasksSlice"; // Redux actions
 import { Button } from "@/components/ui/button";
@@ -33,6 +32,7 @@ import Filter from "@/components/Filter";
 import { formatDate } from "@/helper/DateFormate";
 import { useUser } from "@clerk/clerk-react";
 import { fetchUser } from "@/store/usersSlice";
+import Loader from "@/components/Loader";
 const TaskDetails = () => {
   const dispatch = useDispatch();
   const { user } = useUser();
@@ -55,7 +55,7 @@ const TaskDetails = () => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); // Control delete modal visibility
 
   useEffect(() => {
-    if (!query.userId || backEndUsers) return;
+    if (!query.userId) return;
     dispatch(
       fetchTasks({
         sortBy: query.sortBy,
@@ -97,11 +97,11 @@ const TaskDetails = () => {
       [name]: value,
     });
   };
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <Loader></Loader>;
   if (error) return <p>{error}</p>;
 
   return (
-    <div className="h-screen mx-auto p-4 overflow-y-scroll pb-28">
+    <div className="mx-auto max-w-7xl p-6 pb-36 bg-gray-50">
       {/* Filters */}
       <Filter handleSelectChange={handleSelectChange}></Filter>
       <Table>
