@@ -108,22 +108,18 @@ const Sidebar = () => {
 
             return (
               <li key={index}>
-                <div
-                  className={`flex items-center justify-between space-x-2 p-2 rounded-md cursor-pointer font-bold
+                <NavLink
+                  to={item.href}
+                  className={`flex items-center justify-start space-x-2 p-2 rounded-md cursor-pointer font-bold
                     ${
                       isActive
                         ? "text-primary-1 bg-gradient-to-r from-primary-3 to-primary-4 border-l-4 border-primary-1"
                         : "text-gray hover:bg-gray-700"
                     }${isCollapsed ? "justify-center" : ""}`}
                 >
-                  <NavLink
-                    to={item.href}
-                    className="flex items-center space-x-2"
-                  >
-                    <item.icon />
-                    {!isCollapsed && <span>{item.title}</span>}
-                  </NavLink>
-                </div>
+                  <item.icon />
+                  {!isCollapsed && <span>{item.title}</span>}
+                </NavLink>
               </li>
             );
           })}
