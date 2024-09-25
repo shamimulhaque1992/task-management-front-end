@@ -14,7 +14,6 @@ const DashboardLayout = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
-  console.log(location, "locasd");
   const {
     user: backEndUsers,
     loading: userLoading,
