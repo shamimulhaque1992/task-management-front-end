@@ -61,7 +61,7 @@ const Filter = ({ handleSelectChange }) => {
         <label className="font-semibold mb-2">Status:</label>
         <Select onValueChange={(value) => handleSelectChange("status", value)}>
           <SelectTrigger>
-            <SelectValue placeholder="Select Priority" />
+            <SelectValue placeholder="Select Status" />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="Pending">Pending</SelectItem>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchTasks, deleteTask, updateTask } from "../store/tasksSlice"; // Redux actions
 import { Button } from "@/components/ui/button";
@@ -33,6 +33,7 @@ import { formatDate } from "@/helper/DateFormate";
 import { useUser } from "@clerk/clerk-react";
 import { fetchUser } from "@/store/usersSlice";
 import Loader from "@/components/Loader";
+
 const TaskDetails = () => {
   const dispatch = useDispatch();
   const { user } = useUser();
@@ -66,10 +67,12 @@ const TaskDetails = () => {
       })
     );
   }, [dispatch, query, backEndUsers]);
+
   useEffect(() => {
     if (!user) return;
     dispatch(fetchUser(user?.primaryEmailAddress?.emailAddress));
   }, [dispatch, user]);
+
   useEffect(() => {
     setQuery({ ...query, userId: backEndUsers?._id });
   }, [backEndUsers]);
@@ -91,19 +94,35 @@ const TaskDetails = () => {
     dispatch(deleteTask(selectedTask._id)); // Dispatch delete action
     setIsDeleteModalOpen(false); // Close modal
   };
+
   const handleSelectChange = (name, value) => {
     setQuery({
       ...query,
       [name]: value,
     });
   };
-  if (loading) return <Loader></Loader>;
+
+  // Memoizing the filtered tasks based on query
+  const filteredTasks = useMemo(() => {
+    if (!tasks) return [];
+
+    return tasks.filter((task) => {
+      return (
+        (query.priority ? task.priority === query.priority : true) &&
+        (query.status ? task.status === query.status : true)
+      );
+    });
+  }, [tasks, query.priority, query.status]);
+
+  if (loading) return <Loader />;
   if (error) return <p>{error}</p>;
 
   return (
     <div className="mx-auto max-w-7xl p-6 pb-36 bg-gray-50">
       {/* Filters */}
-      <Filter handleSelectChange={handleSelectChange}></Filter>
+      <Filter handleSelectChange={handleSelectChange} />
+
+      {/* Task Table */}
       <Table>
         <TableCaption>A list of your recent tasks.</TableCaption>
         <TableHeader>
@@ -117,7 +136,7 @@ const TaskDetails = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {tasks?.map((task, index) => (
+          {filteredTasks?.map((task, index) => (
             <TableRow key={index}>
               <TableCell className="font-medium">{task.title}</TableCell>
               <TableCell>{task.description}</TableCell>
@@ -179,7 +198,6 @@ const TaskDetails = () => {
         />
       )}
 
-      {/* Delete Confirmation Modal */}
       {/* Delete Confirmation Modal */}
       {isDeleteModalOpen && (
         <DeleteTaskModal

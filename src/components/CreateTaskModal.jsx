@@ -36,7 +36,6 @@ const CreateTaskModal = ({ isOpen, onClose, backEndUsers }) => {
     if (!backEndUsers._id) return;
     try {
       dispatch(createTask(newTask)).then((result) => {
-        console.log(result, "result");
         if (result.error) {
           toast.error("Something Went Wrong!", { duration: 3000 });
         }

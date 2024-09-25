@@ -11,6 +11,7 @@ const DashboardLayout = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   useEffect(() => {
+    if (!user) return;
     if (user) {
       dispatch(
         createUser({

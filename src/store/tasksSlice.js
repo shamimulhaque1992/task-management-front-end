@@ -4,12 +4,21 @@ import axios from "axios";
 // Thunks for async API calls
 
 // Fetch tasks
+const env = import.meta.env.VITE_ENVIRONMENT;
+let baseUrl = null;
+if (env === "development") {
+  baseUrl = "http://localhost:5000/";
+}
+if (env === "production") {
+  baseUrl = "https://task-management-server-six.vercel.app/";
+}
+
 export const fetchTasks = createAsyncThunk(
   "tasks/fetchTasks",
   async ({ sortBy, sortOrder, priority, status, userId }) => {
     if (!userId) return;
     const response = await axios.get(
-      `https://task-management-server-six.vercel.app/api/v1/task?sortBy=${sortBy}&sortOrder=${sortOrder}&priority=${priority}&status=${status}&userId=${userId}`
+      `${baseUrl}api/v1/task?sortBy=${sortBy}&sortOrder=${sortOrder}&priority=${priority}&status=${status}&userId=${userId}`
     );
     return response.data.data;
   }
@@ -20,7 +29,7 @@ export const createTask = createAsyncThunk(
   "tasks/createTask",
   async (newTask) => {
     const response = await axios.post(
-      "https://task-management-server-six.vercel.app/api/v1/task/create-task",
+      `${baseUrl}api/v1/task/create-task`,
       newTask
     );
     return response.data.data;
@@ -32,7 +41,7 @@ export const updateTask = createAsyncThunk(
   "tasks/updateTask",
   async ({ taskId, updatedTask }) => {
     const response = await axios.patch(
-      `https://task-management-server-six.vercel.app/api/v1/task/${taskId}`,
+      `${baseUrl}api/v1/task/${taskId}`,
       updatedTask
     );
     return response.data.data;
@@ -43,9 +52,7 @@ export const updateTask = createAsyncThunk(
 export const deleteTask = createAsyncThunk(
   "tasks/deleteTask",
   async (taskId) => {
-    await axios.delete(
-      `https://task-management-server-six.vercel.app/api/v1/task/${taskId}`
-    );
+    await axios.delete(`${baseUrl}api/v1/task/${taskId}`);
     return taskId;
   }
 );

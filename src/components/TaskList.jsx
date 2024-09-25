@@ -31,7 +31,7 @@ const TaskList = () => {
     status: "",
     userId: backEndUsers?._id,
   });
-  console.log(query);
+
   useEffect(() => {
     if (!query.userId) return;
     dispatch(
