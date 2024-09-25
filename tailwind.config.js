@@ -65,6 +65,8 @@ export default {
       fontFamily: {
         jakarta: ["Inter", "sans-serif"],
         poppins: ["Poppins", "sans-serif"],
+        sans: ['Open Sans', 'sans-serif'],
+        roboto: ['Roboto', 'sans-serif'],
       },
       height: {
         "300px": "300px",
