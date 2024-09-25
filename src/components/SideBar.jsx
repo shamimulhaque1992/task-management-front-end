@@ -23,7 +23,7 @@ import {
   FaUser,
 } from "react-icons/fa";
 import { RiMenuUnfold4Line, RiMenuUnfold3Line } from "react-icons/ri";
-import { NavLink, useLocation } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 
 // Sidebar menu items with nested submenus and icons
 const menuItems = [
@@ -95,13 +95,15 @@ const Sidebar = ({ theme }) => {
           </button>
         </div>
         <div className="p-4 flex justify-center items-center flex-col">
-          <img
-            height={100}
-            width={isCollapsed ? 100 : 150}
-            src="/assets/images/time-management.png" // Replace with the actual path to your logo
-            alt="logo"
-            style={{ objectFit: "contain" }}
-          />
+          <Link to="/">
+            <img
+              height={100}
+              width={isCollapsed ? 100 : 150}
+              src="/assets/images/time-management.png" // Replace with the actual path to your logo
+              alt="logo"
+              style={{ objectFit: "contain" }}
+            />
+          </Link>
         </div>
       </div>
 
