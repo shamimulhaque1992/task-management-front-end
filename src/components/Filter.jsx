@@ -18,7 +18,7 @@ const Filter = ({ handleSelectChange, theme }) => {
             <SelectValue placeholder="Select Sort By" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="priority">Priority</SelectItem>
+            {/* <SelectItem value="priority">Priority</SelectItem> */}
             <SelectItem value="dueDate">Due Date</SelectItem>
           </SelectContent>
         </Select>

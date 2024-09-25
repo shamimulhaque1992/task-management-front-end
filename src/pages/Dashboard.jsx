@@ -124,13 +124,16 @@ const Dashboard = () => {
                   {task.title}
                 </h3>
                 {/* Priority with dynamic color */}
-                <span
-                  className={`text-sm font-medium py-1 px-3 rounded-full ${getPriorityStyle(
-                    task.priority
-                  )}`}
-                >
-                  {task.priority}
-                </span>
+                <div className="flex flex-row items-center">
+                  <span className="font-medium text-gray-700">Priority: </span>
+                  <span
+                    className={`ml-2 text-sm font-medium py-1 px-3 rounded-full ${getPriorityStyle(
+                      task.priority
+                    )}`}
+                  >
+                    {task.priority}
+                  </span>
+                </div>
               </div>
 
               <p className="text-gray-600 mt-2 mb-4">{task.description}</p>
