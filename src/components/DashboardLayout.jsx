@@ -40,10 +40,6 @@ const DashboardLayout = () => {
     );
   }, [dispatch, user]);
 
-  if (!isSignedIn) {
-    navigate("/sign-in");
-  }
-
   const theme = backEndUsers?.preferences?.theme;
   return (
     <section
@@ -59,7 +55,11 @@ const DashboardLayout = () => {
 
           {/* Main Content Area */}
           <main className="flex-1 py-5 bg-gray-100">
-            {location.pathname === "/" ? <WelcomeScreen theme={theme}></WelcomeScreen> : ""}
+            {location.pathname === "/" ? (
+              <WelcomeScreen theme={theme}></WelcomeScreen>
+            ) : (
+              ""
+            )}
             <Outlet></Outlet>
           </main>
         </div>
