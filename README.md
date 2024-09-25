@@ -1,8 +1,57 @@
-# React + Vite
+# Task Management Web App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This project is a task management web application built using **Vite** and **React**. It allows users to manage tasks, update preferences, and navigate through a professional UI. The app integrates **Clerk** for authentication, **Redux** for state management, and **Tailwind CSS** & **ShadcnUI** for styling.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- User authentication using Clerk
+- Task management (CRUD operations)
+- User preferences management
+- Sorting and filtering tasks
+- State management using Redux
+- Dark/Light theme support
+- Professional UI using Tailwind CSS and ShadcnUI
+
+## Technologies Used
+
+- **Vite** for fast development
+- **React** for component-based architecture
+- **Redux** for state management
+- **Clerk** for authentication
+- **Tailwind CSS** for styling
+- **ShadcnUI** for UI components
+- **Axios** for API requests
+
+## Setup Instructions
+
+### Install Dependencies
+
+###
+
+Using **npm**:
+
+```bash
+npm install
+
+```
+
+### Set Up Environment Variables
+
+- VITE_ENVIRONMENT=development
+- VITE_CLERK_FRONTEND_API=<your-clerk-frontend-api>
+
+### Start the Development Server
+
+```bash
+npm run dev
+
+```
+
+### Building for Production
+
+```bash
+npm run build
+
+```
+
+This `README.md` provides a detailed guide to setting up the project with the necessary steps included for installation, environment setup, and more.
