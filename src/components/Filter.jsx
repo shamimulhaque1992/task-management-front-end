@@ -7,14 +7,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-const Filter = ({ handleSelectChange }) => {
+const Filter = ({ handleSelectChange, theme }) => {
   return (
     <div className="flex gap-4 mb-6">
       {/* Sort by */}
       <div className="flex flex-col">
         <label className="font-semibold mb-2">Sort By:</label>
         <Select onValueChange={(value) => handleSelectChange("sortBy", value)}>
-          <SelectTrigger>
+          <SelectTrigger className={`${theme === "dark" ? "text-black" : ""}`}>
             <SelectValue placeholder="Select Sort By" />
           </SelectTrigger>
           <SelectContent>
@@ -30,7 +30,7 @@ const Filter = ({ handleSelectChange }) => {
         <Select
           onValueChange={(value) => handleSelectChange("sortOrder", value)}
         >
-          <SelectTrigger>
+          <SelectTrigger className={`${theme === "dark" ? "text-black" : ""}`}>
             <SelectValue placeholder="Select Sort Order" />
           </SelectTrigger>
           <SelectContent>
@@ -46,7 +46,7 @@ const Filter = ({ handleSelectChange }) => {
         <Select
           onValueChange={(value) => handleSelectChange("priority", value)}
         >
-          <SelectTrigger>
+          <SelectTrigger className={`${theme === "dark" ? "text-black" : ""}`}>
             <SelectValue placeholder="Select Priority" />
           </SelectTrigger>
           <SelectContent>
@@ -60,7 +60,7 @@ const Filter = ({ handleSelectChange }) => {
       <div className="flex flex-col">
         <label className="font-semibold mb-2">Status:</label>
         <Select onValueChange={(value) => handleSelectChange("status", value)}>
-          <SelectTrigger>
+          <SelectTrigger className={`${theme === "dark" ? "text-black" : ""}`}>
             <SelectValue placeholder="Select Status" />
           </SelectTrigger>
           <SelectContent>

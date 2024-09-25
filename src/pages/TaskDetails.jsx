@@ -116,11 +116,11 @@ const TaskDetails = () => {
 
   if (loading) return <Loader />;
   if (error) return <p>{error}</p>;
-
+  const theme = backEndUsers?.preferences?.theme;
   return (
     <div className="mx-auto max-w-7xl p-6 pb-36 bg-gray-50">
       {/* Filters */}
-      <Filter handleSelectChange={handleSelectChange} />
+      <Filter theme={theme} handleSelectChange={handleSelectChange} />
 
       {/* Task Table */}
       <Table>

@@ -36,39 +36,20 @@ const DashboardLayout = () => {
     );
   }, [dispatch, user]);
 
-  /* useEffect(() => {
-    if (!user || backEndUsers) return;
-    if (user && !backEndUsers) {
-      dispatch(
-        createUser({
-          name: user.fullName,
-          email: user?.primaryEmailAddress?.emailAddress,
-        })
-      ).then((result) => {
-        if (
-          result.meta.requestStatus === "fulfilled" &&
-          !result.payload.errorResponse
-        ) {
-          setBackendUserCreated(true);
-        } else {
-          false;
-        }
-      });
-    }
-  }, [dispatch, user, backEndUsers]); */
   if (!isSignedIn) {
     navigate("/sign-in");
   }
 
+  const theme = backEndUsers?.preferences?.theme;
   return (
-    <section className="bg-light_gray ">
+    <section className={`${theme === "dark" ? "bg-dark text-white" : "bg-light_gray"}`}>
       <div className="flex container p-5">
         {/* Sidebar */}
-        <Sidebar />
+        <Sidebar theme={theme} />
 
         <div className="flex-1 flex flex-col ms-5 ">
           {/* Navbar */}
-          <Navbar />
+          <Navbar theme={theme}/>
 
           {/* Main Content Area */}
           <main className="flex-1 py-5 bg-gray-100">

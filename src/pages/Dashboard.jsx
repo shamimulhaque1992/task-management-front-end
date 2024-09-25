@@ -75,9 +75,9 @@ const Dashboard = () => {
 
   if (loading || createLoading) return <Loader />;
   if (error) return <p>{error}</p>;
-
+  const theme = backEndUsers?.preferences?.theme;
   return (
-    <div className="mx-auto max-w-7xl p-6 pb-36 bg-gray-50">
+    <div className="mx-auto max-w-7xl p-6 pb-36 bg-gray-500">
       {/* Header */}
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-3xl font-extrabold text-gray-800">All Tasks</h2>
@@ -91,11 +91,11 @@ const Dashboard = () => {
 
       {/* Filters */}
       <div className="mb-8">
-        <Filter handleSelectChange={handleSelectChange} />
+        <Filter theme={theme} handleSelectChange={handleSelectChange} />
       </div>
 
       {/* Task List */}
-      <ul className="space-y-6">
+      <ul className="space-y-6 ">
         {filteredTasks?.map((task) => {
           const getStatusStyle = (status) => {
             if (status === "In Progress")
@@ -115,7 +115,9 @@ const Dashboard = () => {
           return (
             <li
               key={task._id}
-              className="bg-white shadow-lg p-6 rounded-xl border border-gray-200 transition-shadow hover:shadow-xl"
+              className={`${
+                theme === "dark" ? "bg-black-200" : "bg-white"
+              } shadow-lg p-6 rounded-xl border border-gray-200 transition-shadow hover:shadow-xl`}
             >
               <div className="flex items-center justify-between">
                 <h3 className="text-2xl font-bold text-gray-800">

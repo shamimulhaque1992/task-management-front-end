@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React, { useEffect, useState } from "react";
 import {
   FaTachometerAlt,
@@ -31,7 +32,7 @@ const menuItems = [
   { href: "/settings", title: "Settings", icon: FaWrench },
 ];
 
-const Sidebar = () => {
+const Sidebar = ({ theme }) => {
   const location = useLocation(); // Get the current path
   const [openMenus, setOpenMenus] = useState([]); // State to track open submenus
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -70,9 +71,9 @@ const Sidebar = () => {
 
   return (
     <div
-      className={`h-screen ${
-        isCollapsed ? "w-20" : "w-60"
-      } bg-white text-white flex flex-col rounded-lg h-full overflow-y-auto sidebar transition-all duration-500 ease-in-out`}
+      className={`h-screen ${isCollapsed ? "w-20" : "w-60"} ${
+        theme === "dark" ? "bg-zinc-800" : "bg-white"
+      } text-white flex flex-col rounded-lg h-full overflow-y-auto sidebar transition-all duration-500 ease-in-out`}
     >
       {/* Sidebar top icon */}
       <div className="flex flex-col justify-between items-center py-4">
@@ -83,9 +84,13 @@ const Sidebar = () => {
         >
           <button onClick={toggleSidebar} className="text-black">
             {isCollapsed ? (
-              <RiMenuUnfold3Line className="text-2xl" />
+              <RiMenuUnfold3Line
+                className={`text-2xl ${theme === "dark" ? "text-white" : ""} `}
+              />
             ) : (
-              <RiMenuUnfold4Line className="text-2xl" />
+              <RiMenuUnfold4Line
+                className={`text-2xl ${theme === "dark" ? "text-white" : ""} `}
+              />
             )}
           </button>
         </div>

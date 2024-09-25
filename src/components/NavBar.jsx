@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React from "react";
 import { FaBell, FaUserCircle } from "react-icons/fa";
 import { FiSearch } from "react-icons/fi";
@@ -6,7 +7,7 @@ import { IoIosNotificationsOutline } from "react-icons/io";
 import { Input } from "./ui/input";
 import { SignedIn, UserButton, useUser } from "@clerk/clerk-react";
 
-const Navbar = () => {
+const Navbar = ({theme}) => {
   const { user } = useUser();
 
   return (
@@ -31,7 +32,7 @@ const Navbar = () => {
             <UserButton />
           </SignedIn>
 
-          <span className="text-gray-700 font-medium">{user?.fullName}</span>
+          <span className={`${theme==="dark"?"text-white":"text-gray-700"} font-medium`}>{user?.fullName}</span>
         </div>
       </div>
     </div>

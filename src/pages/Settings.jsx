@@ -57,13 +57,14 @@ const Settings = () => {
   if (loading) {
     return <Loader></Loader>;
   }
+  const themes = user?.preferences?.theme;
   return (
     <div className="max-w-7xl mx-auto py-10">
-      <h1 className="text-3xl font-bold mb-6 text-gray-800">Settings</h1>
+      <h1 className="text-3xl font-bold mb-6">Settings</h1>
 
       {/* Theme Selection */}
       <section className="mb-10">
-        <h2 className="text-xl font-semibold mb-4 text-gray-700">Theme</h2>
+        <h2 className="text-xl font-semibold mb-4 ">Theme</h2>
         <div className="flex gap-4">
           {/* Light Theme */}
           <Card
@@ -84,9 +85,7 @@ const Settings = () => {
                 </div>
               </div>
               <div className="bg-gray-100 rounded-md h-20 p-4">
-                <p className="text-gray-800">
-                  This is how the light theme looks.
-                </p>
+                <p className="">This is how the light theme looks.</p>
               </div>
             </CardContent>
           </Card>
@@ -110,9 +109,7 @@ const Settings = () => {
                 </div>
               </div>
               <div className="bg-gray-800 rounded-md h-20 p-4">
-                <p className="text-gray-200">
-                  This is how the dark theme looks.
-                </p>
+                <p className="">This is how the dark theme looks.</p>
               </div>
             </CardContent>
           </Card>
@@ -136,9 +133,7 @@ const Settings = () => {
                 </div>
               </div>
               <div className="bg-gray-800 rounded-md h-20 p-4">
-                <p className="text-gray-200">
-                  This is how the system theme looks.
-                </p>
+                <p className="">This is how the system theme looks.</p>
               </div>
             </CardContent>
           </Card>
@@ -147,24 +142,20 @@ const Settings = () => {
 
       {/* Other Preferences */}
       <section className="mb-10">
-        <h2 className="text-xl font-semibold mb-4 text-gray-700">
-          General Preferences
-        </h2>
+        <h2 className="text-xl font-semibold mb-4 ">General Preferences</h2>
 
         {/* Notifications */}
         <div className="flex items-center justify-between mb-6">
           <div>
-            <Label
-              htmlFor="notifications"
-              className="font-medium text-gray-700"
-            >
+            <Label htmlFor="notifications" className="font-medium ">
               Enable Notifications
             </Label>
-            <p className="text-gray-500 text-sm">
+            <p className=" text-sm">
               Receive email or push notifications for task updates.
             </p>
           </div>
           <Switch
+            style={{ border: themes === "dark" ? "2px solid white" : "" }}
             id="notifications"
             checked={notifications}
             onCheckedChange={setNotifications}
@@ -173,20 +164,26 @@ const Settings = () => {
 
         {/* Task Sorting */}
         <div className="mb-6">
-          <Label className="font-medium text-gray-700 mb-2">
-            Default Task Sorting
-          </Label>
+          <Label className="font-medium  mb-2">Default Task Sorting</Label>
           <RadioGroup
             value={defaultSortBy}
             onValueChange={setDefaultSortBy}
             className="flex flex-col gap-2"
           >
             <div className="flex items-center space-x-2">
-              <RadioGroupItem value="dueDate" id="dueDate" />
+              <RadioGroupItem
+                style={{ border: themes === "dark" ? "2px solid white" : "" }}
+                value="dueDate"
+                id="dueDate"
+              />
               <Label htmlFor="dueDate">By Due Date</Label>
             </div>
             <div className="flex items-center space-x-2">
-              <RadioGroupItem value="priority" id="priority" />
+              <RadioGroupItem
+                style={{ border: themes === "dark" ? "2px solid white" : "" }}
+                value="priority"
+                id="priority"
+              />
               <Label htmlFor="priority">By Priority</Label>
             </div>
           </RadioGroup>
