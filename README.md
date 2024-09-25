@@ -54,4 +54,5 @@ npm run build
 
 ```
 
+### License
 This `README.md` provides a detailed guide to setting up the project with the necessary steps included for installation, environment setup, and more.
