@@ -19,7 +19,7 @@ const Dashboard = () => {
     (state) => state.tasks
   );
   const {
-    users: backEndUsers,
+    user: backEndUsers,
     loading: userLoading,
     error: userError,
   } = useSelector((state) => state.users);

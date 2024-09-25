@@ -15,7 +15,7 @@ import Loader from "@/components/Loader";
 const Settings = () => {
   const dispatch = useDispatch();
   const { user: clerkUser } = useUser();
-  const { users, loading, success } = useSelector((state) => state.users); // Assuming the user data is stored here
+  const { user, loading, success } = useSelector((state) => state.users); // Assuming the user data is stored here
   const [theme, setTheme] = useState("light");
   const [notifications, setNotifications] = useState(false);
   const [defaultSortBy, setDefaultSortBy] = useState("priority");
@@ -30,12 +30,12 @@ const Settings = () => {
 
   // Update state when user data is fetched
   useEffect(() => {
-    if (users && users.preferences) {
-      setTheme(users.preferences.theme || "light");
-      setNotifications(users.preferences.notifications || false);
-      setDefaultSortBy(users.preferences.defaultSortBy || "priority");
+    if (user && user.preferences) {
+      setTheme(user.preferences.theme || "light");
+      setNotifications(user.preferences.notifications || false);
+      setDefaultSortBy(user.preferences.defaultSortBy || "priority");
     }
-  }, [users]);
+  }, [user]);
 
   // Handle Save Preferences with confirmation modal
   const handleSavePreferences = () => {
@@ -44,7 +44,7 @@ const Settings = () => {
 
   const handleConfirmSave = () => {
     const preferences = {
-      userId: users._id, // Assuming user._id exists
+      userId: user._id, // Assuming user._id exists
       preferences: {
         theme,
         notifications,
@@ -54,7 +54,9 @@ const Settings = () => {
     dispatch(updateUserPreferences(preferences)); // Dispatch the update action
     setShowDialog(false); // Close the dialog
   };
-
+  if (loading) {
+    return <Loader></Loader>;
+  }
   return (
     <div className="max-w-7xl mx-auto py-10">
       <h1 className="text-3xl font-bold mb-6 text-gray-800">Settings</h1>

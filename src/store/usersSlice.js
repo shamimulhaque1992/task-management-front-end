@@ -43,7 +43,7 @@ export const updateUserPreferences = createAsyncThunk(
 const usersSlice = createSlice({
   name: "users",
   initialState: {
-    users: [],
+    user: null, // Change to hold a single user object
     loading: false,
     error: null,
     success: false,
@@ -57,7 +57,7 @@ const usersSlice = createSlice({
       })
       .addCase(fetchUser.fulfilled, (state, action) => {
         state.loading = false;
-        state.users = action.payload;
+        state.user = action.payload; // Store fetched user
       })
       .addCase(fetchUser.rejected, (state, action) => {
         state.loading = false;
@@ -70,7 +70,7 @@ const usersSlice = createSlice({
       })
       .addCase(createUser.fulfilled, (state, action) => {
         state.loading = false;
-        state.users.push(action.payload); // Add the new user to the list
+        state.user = action.payload; // Store created user
       })
       .addCase(createUser.rejected, (state, action) => {
         state.loading = false;
@@ -80,18 +80,12 @@ const usersSlice = createSlice({
       // Handle update user preferences
       .addCase(updateUserPreferences.pending, (state) => {
         state.loading = true;
+        state.success = false;
       })
       .addCase(updateUserPreferences.fulfilled, (state, action) => {
         state.loading = false;
-        // Update user preferences logic; here we assume the payload is the updated user data
-        const updatedUser = action.payload;
-        const index = state.users.findIndex(
-          (user) => user._id === updatedUser._id
-        );
         state.success = true;
-        if (index !== -1) {
-          state.users[index] = updatedUser; // Update the user in the list
-        }
+        state.user = action.payload; // Update the user with new preferences
       })
       .addCase(updateUserPreferences.rejected, (state, action) => {
         state.loading = false;

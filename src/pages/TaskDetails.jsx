@@ -39,7 +39,7 @@ const TaskDetails = () => {
   const { user } = useUser();
   const { tasks, loading, error } = useSelector((state) => state.tasks);
   const {
-    users: backEndUsers,
+    user: backEndUsers,
     loading: userLoading,
     error: userError,
   } = useSelector((state) => state.users);
@@ -127,8 +127,8 @@ const TaskDetails = () => {
         <TableCaption>A list of your recent tasks.</TableCaption>
         <TableHeader>
           <TableRow>
-            <TableHead>Task</TableHead>
-            <TableHead>Description</TableHead>
+            <TableHead className="max-w-60">Task</TableHead>
+            <TableHead className="max-w-60">Description</TableHead>
             <TableHead>Due Date</TableHead>
             <TableHead>Priority</TableHead>
             <TableHead>Status</TableHead>
@@ -138,8 +138,10 @@ const TaskDetails = () => {
         <TableBody>
           {filteredTasks?.map((task, index) => (
             <TableRow key={index}>
-              <TableCell className="font-medium">{task.title}</TableCell>
-              <TableCell>{task.description}</TableCell>
+              <TableCell className="max-w-60 font-medium">
+                {task.title}
+              </TableCell>
+              <TableCell className="max-w-60">{task.description}</TableCell>
               <TableCell>{formatDate(task.dueDate)}</TableCell>
               <TableCell
                 className={`${

@@ -2,25 +2,60 @@ import { Outlet, useNavigate } from "react-router-dom";
 import Sidebar from "./SideBar";
 import Navbar from "./NavBar";
 import { useUser } from "@clerk/clerk-react";
-import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { createUser } from "@/store/usersSlice";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { createUser, fetchUser } from "@/store/usersSlice";
+import Loader from "./Loader";
 
 const DashboardLayout = () => {
   const { isSignedIn, user } = useUser();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const {
+    user: backEndUsers,
+    loading: userLoading,
+    error: userError,
+  } = useSelector((state) => state.users);
   useEffect(() => {
-    if (!user) return;
-    if (user) {
+    if (!user?.primaryEmailAddress?.emailAddress) return;
+    dispatch(fetchUser(user?.primaryEmailAddress?.emailAddress)).then(
+      (result) => {
+        if (result.error.code === "ERR_BAD_REQUEST") {
+          dispatch(
+            createUser({
+              name: user.fullName,
+              email: user?.primaryEmailAddress?.emailAddress,
+            })
+          ).then((result) => {
+            if (result.meta.requestStatus === "fulfilled") {
+              dispatch(fetchUser(user?.primaryEmailAddress?.emailAddress));
+            }
+          });
+        }
+      }
+    );
+  }, [dispatch, user]);
+
+  /* useEffect(() => {
+    if (!user || backEndUsers) return;
+    if (user && !backEndUsers) {
       dispatch(
         createUser({
           name: user.fullName,
           email: user?.primaryEmailAddress?.emailAddress,
         })
-      );
+      ).then((result) => {
+        if (
+          result.meta.requestStatus === "fulfilled" &&
+          !result.payload.errorResponse
+        ) {
+          setBackendUserCreated(true);
+        } else {
+          false;
+        }
+      });
     }
-  }, [dispatch, user]);
+  }, [dispatch, user, backEndUsers]); */
   if (!isSignedIn) {
     navigate("/sign-in");
   }
