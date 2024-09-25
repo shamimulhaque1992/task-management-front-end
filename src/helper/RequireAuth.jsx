@@ -1,15 +1,21 @@
 /* eslint-disable react/prop-types */
 import React from "react";
-import { Navigate, useLocation } from "react-router-dom";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { useAuth, useUser } from "@clerk/clerk-react";
 import Loader from "@/components/Loader";
 
 const RequireAuth = ({ children }) => {
   const { isLoaded, isSignedIn } = useAuth(); // Clerk authentication
   const location = useLocation();
-
-  // Show a loader while the auth state is being determined
+  const navigate = useNavigate();
+  if (
+    isSignedIn &&
+    (location.pathname === "/sign-in" || location.pathname === "/sign-in")
+  ) {
+    navigate("/");
+  }
   if (!isLoaded) {
+    // Show a loader while the auth state is being determined
     return <Loader />;
   }
 
